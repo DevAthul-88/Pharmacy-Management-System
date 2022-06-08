@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Login - Login</title>
+    <title>MEDIC - Login</title>
 
 
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -20,7 +20,7 @@
 
 </head>
 
-<body class="bg-gradient-light">
+<body class="bg-gradient-primary">
 
     <div class="container">
 
@@ -56,7 +56,7 @@
                                         <a class="small" href="forgot-password.html">Forgot Password?</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="register.html">Create an Account!</a>
+                                        <a class="small" href="signup.php">Create an Account!</a>
                                     </div>
                                 </div>
                             </div>

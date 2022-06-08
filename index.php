@@ -1,3 +1,11 @@
+<?php
+require "func/auth.php";
+
+isUserAuthenticated();
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
