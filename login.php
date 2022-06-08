@@ -1,3 +1,13 @@
+<?php 
+
+$message = null;
+if($_GET["registered"]){
+$message = "User successfully registered! Please login to your account";
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,7 +33,11 @@
 <body class="bg-gradient-primary">
 
     <div class="container">
-
+    <?php if (isset($message)) {
+            echo "<div class='alert alert-success mt-5' role='alert'>
+          $message
+        </div>";
+        } ?>
 
         <div class="row justify-content-center">
 
