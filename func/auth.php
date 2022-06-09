@@ -3,7 +3,7 @@ require "redirect.php";
 
 function isUserAuthenticated(){
     if(!$_SESSION["auth"]){
-        redirect("login.php");
+        redirect("login.php?unauthorized");
     }
 }
 

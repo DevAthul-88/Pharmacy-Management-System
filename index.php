@@ -1,4 +1,5 @@
 <?php
+session_start();
 require "func/auth.php";
 
 isUserAuthenticated();

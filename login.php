@@ -1,4 +1,5 @@
 <?php
+session_start();
 require "connection/connection.php";
 require "func/redirect.php";
 
@@ -16,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (mysqli_num_rows($result)) {
         $user = $result->fetch_assoc();
         $checkPassword = password_verify($password , $user["password"]);
-        if ($checkPassword == false) {
+        if ($checkPassword == 0) {
             $error = "Incorrect Password";
         } else {
             $_SESSION["auth"] = "true";
