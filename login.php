@@ -11,9 +11,9 @@ if (isset($_GET["registered"])) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $password = $_POST["password"];
-    $query = "SELECT * FROM admin WHERE email = '$email' ";
-    $result = $conn->query($query);
-    if ($result->num_rows > 0) {
+    $query = "SELECT * FROM admin WHERE email='$email' ";
+    $result = mysqli_query($conn , $query);
+    if (mysqli_num_rows($result)) {
         $user = $result->fetch_assoc();
         $checkPassword = password_verify($password , $user["password"]);
         if ($checkPassword == false) {
@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
-                                    <form class="user" method="POST" action="">
+                                    <form class="user" action="" method="POST" >
                                         <div class="form-group">
                                             <input type="email" name="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
                                         </div>
