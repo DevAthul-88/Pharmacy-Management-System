@@ -1,11 +1,14 @@
 <?php
 session_start();
 require "../func/auth.php";
+require "../connection/connection.php";
 
 isUserAuthenticated();
 
 $firstname = $_SESSION["firstname"];
 $lastname = $_SESSION["lastname"];
+
+
 
 ?>
 
@@ -22,12 +25,9 @@ $lastname = $_SESSION["lastname"];
     <meta name="author" content="">
 
     <title>Medic - View Pharmacist</title>
-
-    <!-- Custom fonts for this template-->
+    <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <!-- Custom styles for this template-->
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
@@ -152,7 +152,7 @@ $lastname = $_SESSION["lastname"];
 
 
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
+                <h5>Pharmacy Management System</h5>
 
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
@@ -185,58 +185,11 @@ $lastname = $_SESSION["lastname"];
                         </li>
 
 
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw"></i>
-
-                                <span class="badge badge-danger badge-counter">3+</span>
-                            </a>
-
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header">
-                                    Alerts Center
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                            </div>
-                        </li>
+                       
 
 
 
-
-                        <div class="topbar-divider d-none d-sm-block"></div>
+                        
 
 
                         <li class="nav-item dropdown no-arrow">
@@ -278,11 +231,22 @@ $lastname = $_SESSION["lastname"];
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Download Data</a>
                     </div>
 
+                    <div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>firstname</th>
+                                        <th>lastname</th>
+                                        <th>email</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-
-
             </div>
-
 
 
             <footer class="sticky-footer bg-white">
@@ -292,10 +256,16 @@ $lastname = $_SESSION["lastname"];
                     </div>
                 </div>
             </footer>
-            <!-- End of Footer -->
 
         </div>
-        <!-- End of Content Wrapper -->
+
+
+
+
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
@@ -329,10 +299,31 @@ $lastname = $_SESSION["lastname"];
     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="../js/sb-admin-2.min.js"></script>
-    <script src="../vendor/chart.js/Chart.min.js"></script>
-    <script src="../js/demo/chart-area-demo.js"></script>
-    <script src="../js/demo/chart-pie-demo.js"></script>
-
+    <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="../js/demo/datatables-demo.js"></script>
 </body>
 
 </html>
+
+<script>
+    $('#dataTable').dataTable({
+        "ajax": {
+            "url": "data.php",
+            "dataSrc": ""
+        },
+        "columns": [{
+                "data": "id"
+            },
+            {
+                "data": "firstname"
+            },
+            {
+                "data": "lastname"
+            },
+            {
+                "data": "email"
+            }
+        ]
+    });
+</script>

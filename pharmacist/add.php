@@ -9,6 +9,39 @@ $lastname = $_SESSION["lastname"];
 
 ?>
 
+<?php
+
+require "../connection/connection.php";
+
+
+$error = null;
+$loading = false;
+$message = null;
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $firstName = $_POST["firstname"];
+    $lastName = $_POST["lastname"];
+    $email = $_POST["email"];
+    $password = $_POST["password"];
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $loading = true;
+    $sql = "INSERT INTO pharmacist (firstname , lastname , email , password) VALUES ('$firstName' , '$lastName' , '$email' , '$hashedPassword') ";
+    if ($conn->query($sql) == true) {
+        $message = "Pharmacist created successfully";
+    } else {
+        $error = "Error occurred while submitting";
+        $loading = false;
+    }
+
+    $conn->close();
+}
+
+
+
+?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -152,7 +185,7 @@ $lastname = $_SESSION["lastname"];
 
 
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
+                    <h5>Pharmacy Management System</h5>
 
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
@@ -185,58 +218,11 @@ $lastname = $_SESSION["lastname"];
                         </li>
 
 
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw"></i>
-
-                                <span class="badge badge-danger badge-counter">3+</span>
-                            </a>
-
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header">
-                                    Alerts Center
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                            </div>
-                        </li>
 
 
 
 
-                        <div class="topbar-divider d-none d-sm-block"></div>
+
 
 
                         <li class="nav-item dropdown no-arrow">
@@ -272,82 +258,108 @@ $lastname = $_SESSION["lastname"];
                 </nav>
 
                 <div class="container-fluid">
+                    <?php if (isset($error)) {
+                        echo "<div class='alert alert-danger mt-5' role='alert'>
+          $error
+        </div>";
+                    } ?>
 
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Add Pharmacist</h1>
+                    <div class="container-fluid">
+                        <?php if (isset($message)) {
+                            echo "<div class='alert alert-success mt-5' role='alert'>
+          $message
+        </div>";
+                        } ?>
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="h3 mb-0 text-gray-800">Add Pharmacist</h1>
+                        </div>
+                        <form class="user" action="" method="POST">
+                            <div class="form-group">
+                                <input type="text" name="firstname" class="form-control form-control" placeholder="Last Name" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="lastname" class="form-control form-control" placeholder="First Name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="email" name="email" class="form-control form-control" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." required>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" name="password" class="form-control form-control" id="exampleInputPassword" placeholder="Password" required>
+                            </div>
+                            <?php if ($loading) {
+                                echo "
+                        
+                            <button  class='btn btn-primary' disabled='true'>
+                                Loading....
+                            </button>
+                            
+                            ";
+                            } else {
+                                echo "
+                        
+                            <button type='submit' class='btn btn-primary'>
+                                Create Pharmacist
+                            </button>
+                            
+                            ";
+                            }
+                            ?>
+                        </form>
                     </div>
-                    <form class="user" action="" method="POST">
-                    <div class="form-group">
-                            <input type="text" name="firstname" class="form-control form-control"  placeholder="Last Name">
-                        </div>
-                    <div class="form-group">
-                            <input type="text" name="lastname" class="form-control form-control"  placeholder="First Name">
-                        </div>
 
-                        <div class="form-group">
-                            <input type="email" name="email" class="form-control form-control" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+
+                </div>
+
+
+
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>Copyright &copy; Your Website 2021</span>
                         </div>
-                        <div class="form-group">
-                            <input type="password" name="password" class="form-control form-control" id="exampleInputPassword" placeholder="Password">
-                        </div>
-                        <button type="submit" class="btn btn-primary ">
-                            Create Pharmacist
+                    </div>
+                </footer>
+                <!-- End of Footer -->
+
+            </div>
+            <!-- End of Content Wrapper -->
+
+        </div>
+        <!-- End of Page Wrapper -->
+
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
                         </button>
-                    </form>
-                </div>
-
-
-            </div>
-
-
-
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" href="login.html">Logout</a>
                     </div>
                 </div>
-            </footer>
-            <!-- End of Footer -->
-
-        </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
-                </div>
             </div>
         </div>
-    </div>
 
 
-    <script src="../vendor/jquery/jquery.min.js"></script>
-    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="../js/sb-admin-2.min.js"></script>
-    <script src="../vendor/chart.js/Chart.min.js"></script>
-    <script src="../js/demo/chart-area-demo.js"></script>
-    <script src="../js/demo/chart-pie-demo.js"></script>
+        <script src="../vendor/jquery/jquery.min.js"></script>
+        <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script src="../js/sb-admin-2.min.js"></script>
+        <script src="../vendor/chart.js/Chart.min.js"></script>
+        <script src="../js/demo/chart-area-demo.js"></script>
+        <script src="../js/demo/chart-pie-demo.js"></script>
 
 </body>
 
