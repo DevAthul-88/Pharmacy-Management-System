@@ -2,18 +2,19 @@
 
 require "../connection/connection.php";
 
-$sql = "SELECT * FROM pharmacist";
-$result = $conn->query($sql);
+$boss = $_SESSION["userId"];
 
+$sql = "SELECT * FROM pharmacist WHERE boss=$boss";
+$result = $conn->query($sql);
 $users = array();
 
 if($result->num_rows > 0){
-  while($users = $result->fetch_assoc()){
-
-    echo json_encode($users , JSON_FORCE_OBJECT);
-  }
+   while($row = $result->fetch_assoc()){
+     $users[] = $row;
+   }
 }
 
 
+echo json_encode($users , JSON_NUMERIC_CHECK)
 
 ?>

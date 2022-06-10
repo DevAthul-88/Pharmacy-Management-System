@@ -152,7 +152,7 @@ $lastname = $_SESSION["lastname"];
 
 
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-                <h5>Pharmacy Management System</h5>
+                    <h5>Pharmacy Management System</h5>
 
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
@@ -185,11 +185,11 @@ $lastname = $_SESSION["lastname"];
                         </li>
 
 
-                       
 
 
 
-                        
+
+
 
 
                         <li class="nav-item dropdown no-arrow">
@@ -236,10 +236,11 @@ $lastname = $_SESSION["lastname"];
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>id</th>
-                                        <th>firstname</th>
-                                        <th>lastname</th>
-                                        <th>email</th>
+                                        <th>Id</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -307,23 +308,36 @@ $lastname = $_SESSION["lastname"];
 </html>
 
 <script>
-    $('#dataTable').dataTable({
-        "ajax": {
-            "url": "data.php",
-            "dataSrc": ""
-        },
-        "columns": [{
-                "data": "id"
+
+        $('#dataTable').dataTable({
+
+            ajax: {
+                url: "data.php",
+                dataSrc: "",
+                type:"POST",
+                data: function(e) {
+                    return JSON.stringify(e)
+                    
+                }
             },
-            {
-                "data": "firstname"
-            },
-            {
-                "data": "lastname"
-            },
-            {
-                "data": "email"
-            }
-        ]
-    });
+          
+
+            "columns": [{
+                    "data": "id"
+                },
+                {
+                    "data": "firstname"
+                },
+                {
+                    "data": "lastname"
+                },
+                {
+                    "data": "email"
+                },
+                {
+                    "data":"role"
+                }
+            ]
+        });
+    
 </script>

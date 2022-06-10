@@ -18,6 +18,7 @@ $error = null;
 $loading = false;
 $message = null;
 
+$boss =  $_SESSION["userId"];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $firstName = $_POST["firstname"];
@@ -26,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"];
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     $loading = true;
-    $sql = "INSERT INTO pharmacist (firstname , lastname , email , password) VALUES ('$firstName' , '$lastName' , '$email' , '$hashedPassword') ";
+    $sql = "INSERT INTO pharmacist (firstname , lastname , email , password , boss) VALUES ('$firstName' , '$lastName' , '$email' , '$hashedPassword' , $boss) ";
     if ($conn->query($sql) == true) {
         $message = "Pharmacist created successfully";
     } else {
