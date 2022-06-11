@@ -1,14 +1,65 @@
 <?php
 session_start();
-require "func/auth.php";
-
+require "./connection/connection.php";
+require "./func/redirect.php";
+function isUserAuthenticated(){
+    if(!$_SESSION["auth"]){
+        redirect("./login.php?unauthorized");
+    }
+}
 isUserAuthenticated();
+
 
 $firstname = $_SESSION["firstname"];
 $lastname = $_SESSION["lastname"];
 
+
 ?>
 
+
+<?php
+$id = $_GET["id"];
+require "./connection/connection.php";
+
+
+$error = null;
+$loading = false;
+$message = null;
+$user = null;
+$firstnameUser = "";
+$lastnameUser = "";
+$email = "";
+
+$sql = "SELECT * FROM medicine WHERE id = $id";
+$result = $conn->query($sql);
+
+if ($result->num_rows == 1) {
+    $user = $result->fetch_assoc();
+    $firstnameUser = $user["firstname"];
+    $lastnameUser = $user["lastname"];
+    $email = $user["email"];
+} else {
+    $error = "Some error occurred while fetching the information.";
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $firstName = $_POST["firstname"];
+    $lastName = $_POST["lastname"];
+    $email = $_POST["email"];
+    $loading = true;
+    $sql = "UPDATE boss SET firstname='$firstName' , lastname='$lastName' , email='$email' WHERE id='$id'";
+    if ($conn->query($sql) == true) {
+        $message = "Manager updated successfully";
+    } else {
+        $error = "Error occurred while submitting";
+        $loading = false;
+    }
+
+    $conn->close();
+}
+
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,13 +72,11 @@ $lastname = $_SESSION["lastname"];
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Medic - Medicine</title>
-
-
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <title>Medic - Edit Manager</title>
+    <link href="./vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="./vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="./css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
@@ -52,7 +101,7 @@ $lastname = $_SESSION["lastname"];
 
 
             <li class="nav-item ">
-                <a class="nav-link" href="index.php">
+                <a class="nav-link" href="../index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -61,7 +110,7 @@ $lastname = $_SESSION["lastname"];
             <hr class="sidebar-divider">
 
 
-            <li class="nav-item">
+            <li class="nav-item ">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fa fa-fw fa-user"></i>
                     <span>Pharmacist</span>
@@ -69,14 +118,14 @@ $lastname = $_SESSION["lastname"];
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Pharmacist Options</h6>
-                        <a class="collapse-item" href="pharmacist/add.php">Add Pharmacist</a>
-                        <a class="collapse-item" href="pharmacist/view.php">View Pharmacists</a>
+                        <a class="collapse-item" href="../pharmacist/add.php">Add Pharmacist</a>
+                        <a class="collapse-item" href="../pharmacist/view.php">View Pharmacists</a>
                     </div>
                 </div>
             </li>
 
 
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fa fa-fw fa-user-plus"></i>
                     <span>Manager</span>
@@ -99,8 +148,8 @@ $lastname = $_SESSION["lastname"];
                 <div id="collapseCasher" class="collapse" aria-labelledby="headingCasher" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Casher Options</h6>
-                        <a class="collapse-item" href="./casher/add.php">Add Casher</a>
-                        <a class="collapse-item" href="./casher/view.php">View Cashers</a>
+                        <a class="collapse-item" href="../casher/add.php">Add Casher</a>
+                        <a class="collapse-item" href="../casher/view.php">View Cashers</a>
                     </div>
                 </div>
             </li>
@@ -120,7 +169,7 @@ $lastname = $_SESSION["lastname"];
                     <span>Sales</span></a>
             </li>
 
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="medicine.php">
                     <i class="fas fa-fw fa-pills "></i>
                     <span>Medicine</span></a>
@@ -188,49 +237,118 @@ $lastname = $_SESSION["lastname"];
 
                 </nav>
 
+
+
+
                 <div class="container-fluid">
+                    <?php if (isset($error)) {
+                        echo "<div class='alert alert-danger mt-5' role='alert'>
+          $error
+        </div>";
+                    } ?>
+                    <?php if (isset($message)) {
+                        echo "<div class='alert alert-success mt-5' role='alert'>
+          $message
+        </div>";
+                    } ?>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Medicines</h1>
-                        <a href="medicine_add.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Add Medicine</a>
+                        <h1 class="h3 mb-0 text-gray-800">Edit Medicine</h1>
                     </div>
-                    <div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Medicine Name</th>
-                                        <th>Medicine Generic</th>
-                                        <th>Quantity</th>
-                                        <th>Purchase Date</th>
-                                        <th>Expire Date</th>
-                                        <th>Price</th>
-                                        <th>Type</th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
+                    <form class='user' action='' method='POST'>
+                        <?php
 
-                            </table>
+                        echo "
+                        <div class='form-group'>
+                        <input type='text' name='name' class='form-control form-control' placeholder='Medicine Name' required>
+                    </div>
+
+                    <div class='input-group mb-3'>
+                        <div class='input-group-prepend'>
+                            <label class='input-group-text' for='inputGroupSelect01'>Generic</label>
                         </div>
+                        <select class='custom-select' id='inputGroupSelect01' name='generic'>
+                            <option value='antiviral' selected>Antiviral</option>
+                            <option value='paracetamol'>Paracetamol</option>
+                            <option value='amtodophine'>Amtodophine</option>
+                            <option value='latanoprost_solution'>Latanoprost Solution</option>
+                            <option value='levocetrizine_dihydrochinoride'>Levocetrizine Dihydrochinoride</option>
+                            <option value='metoxicam'>Metoxicam</option>
+                            <option value='acyclovir_capsule'>Acyclovir Capsule</option>
+                            <option value='simvastain_tablets'>Simvastain Tablets</option>
+                        </select>
                     </div>
 
+                    <div class='input-group mb-3'>
+                        <div class='input-group-prepend'>
+                            <label class='input-group-text' for='inputGroupSelect01'>Type</label>
+                        </div>
+                        <select class='custom-select' id='inputGroupSelect01' name='type'>
+                            <option value='capsule' selected>Capsule</option>
+                            <option value='tablet'>Tablet</option>
+                            <option value='liquid/syrup'>Liquid / Syrup</option>
+                        </select>
+
+                    </div>
+
+                    <div class='form-group'>
+                        <input type='date' name='pdate' class='form-control form-control' id='exampleInputPassword' placeholder='Purchase Date' required>
+                        <small id='emailHelp' class='form-text text-muted'>Purchase Date</small>
+                    </div>
+                    <div class='form-group'>
+                        <input type='date' name='edate' class='form-control form-control' id='exampleInputPassword' placeholder='Expire Date' required>
+                        <small id='emailHelp' class='form-text text-muted'>Expire Date.</small>
+                    </div>
+                    <div class='form-group'>
+                        <input type='number' name='quantity' class='form-control form-control' placeholder='Quantity' required>
+                    </div>
+
+                    <div class='form-group'>
+                        <input type='number' name='price' class='form-control form-control' id='exampleInputEmail' aria-describedby='emailHelp' placeholder='Price' required>
+                    </div>
+                     ";
+
+                        ?>
+                        <?php if ($loading) {
+                            echo "
+                        
+                            <button  class='btn btn-primary' disabled='true'>
+                                Loading....
+                            </button>
+                            
+                            ";
+                        } else {
+                            echo "
+                        
+                            <button type='submit' class='btn btn-primary'>
+                                Save
+                            </button>
+                            
+                            ";
+                        }
+                        ?>
+                    </form>
                 </div>
 
 
             </div>
 
 
-
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                        <span>Copyright &copy; Athul Vinod Medic 2022</span>
                     </div>
                 </div>
             </footer>
 
         </div>
+
+
+
+
+
+
+    </div>
 
 
     </div>
@@ -269,26 +387,13 @@ $lastname = $_SESSION["lastname"];
     <script src="./vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="./js/demo/datatables-demo.js"></script>
 
+
 </body>
 
 </html>
 
 <script>
-    var table = $('#dataTable').dataTable({
-        ajax: {
-            url: "medicine_data.php",
-            dataSrc: "",
-            type: "POST",
-            data: function(e) {
-                return JSON.stringify(e)
-
-            }
-        },
-        fnCreateRow: function(nRow, aData, iDataIndex) {
-            $(nRow).attr("id", aData[0])
-        },
 
 
 
-    });
 </script>

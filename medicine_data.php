@@ -28,7 +28,7 @@ if($result->num_rows > 0){
      $subarray[] = $row["edate"];
      $subarray[] = $row["price"];
      $subarray[] = $row["type"];
-     $subarray[] = "<a href='edit.php?id=$id' class='btn btn-info btn-sm'>Edit</a>";
+     $subarray[] = "<a href='medicine_edit.php?id=$id' class='btn btn-info btn-sm'>Edit</a>";
      $subarray[] = "<button onclick='deleteUser($id)' class='btn btn-danger btn-sm'>Delete</button>";
      $users[] = $subarray;
    }
