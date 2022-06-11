@@ -133,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manager Options</h6>
-                        <a class="collapse-item" href="utilities-color.html">Add Manager</a>
+                        <a class="collapse-item" href="../manager/add.php">Add Manager</a>
                         <a class="collapse-item" href="utilities-border.html">View Managers</a>
                     </div>
                 </div>

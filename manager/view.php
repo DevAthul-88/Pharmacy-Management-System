@@ -34,7 +34,7 @@ $lastname = $_SESSION["lastname"];
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Medic - View Pharmacist</title>
+    <title>Medic - View Manger</title>
     <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -72,7 +72,7 @@ $lastname = $_SESSION["lastname"];
             <hr class="sidebar-divider">
 
 
-            <li class="nav-item active">
+            <li class="nav-item ">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fa fa-fw fa-user"></i>
                     <span>Pharmacist</span>
@@ -80,14 +80,14 @@ $lastname = $_SESSION["lastname"];
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Pharmacist Options</h6>
-                        <a class="collapse-item" href="add.php">Add Pharmacist</a>
-                        <a class="collapse-item" href="view.php">View Pharmacists</a>
+                        <a class="collapse-item" href="../pharmacist/add.php">Add Pharmacist</a>
+                        <a class="collapse-item" href="../pharmacist/view.php">View Pharmacists</a>
                     </div>
                 </div>
             </li>
 
 
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fa fa-fw fa-user-plus"></i>
                     <span>Manager</span>
@@ -95,8 +95,8 @@ $lastname = $_SESSION["lastname"];
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manager Options</h6>
-                        <a class="collapse-item" href="../manager/add.php">Add Manager</a>
-                        <a class="collapse-item" href="../manager/view.php">View Managers</a>
+                        <a class="collapse-item" href="add.php">Add Manager</a>
+                        <a class="collapse-item" href="view.php">View Managers</a>
                     </div>
                 </div>
             </li>
