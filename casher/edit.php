@@ -10,18 +10,56 @@ function isUserAuthenticated(){
 isUserAuthenticated();
 
 
-isUserAuthenticated();
 $firstname = $_SESSION["firstname"];
 $lastname = $_SESSION["lastname"];
 
 
+?>
 
 
+<?php
+$id = $_GET["id"];
+require "../connection/connection.php";
 
+
+$error = null;
+$loading = false;
+$message = null;
+$user = null;
+$firstnameUser = "";
+$lastnameUser = "";
+$email = "";
+
+$sql = "SELECT * FROM casher WHERE id = $id";
+$result = $conn->query($sql);
+
+if ($result->num_rows == 1) {
+    $user = $result->fetch_assoc();
+    $firstnameUser = $user["firstname"];
+    $lastnameUser = $user["lastname"];
+    $email = $user["email"];
+} else {
+    $error = "Some error occurred while fetching the information.";
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $firstName = $_POST["firstname"];
+    $lastName = $_POST["lastname"];
+    $email = $_POST["email"];
+    $loading = true;
+    $sql = "UPDATE casher SET firstname='$firstName' , lastname='$lastName' , email='$email' WHERE id='$id'";
+    if ($conn->query($sql) == true) {
+        $message = "Casher updated successfully";
+    } else {
+        $error = "Error occurred while submitting";
+        $loading = false;
+    }
+
+    $conn->close();
+}
 
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +72,7 @@ $lastname = $_SESSION["lastname"];
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Medic - View Pharmacist</title>
+    <title>Medic - Edit Casher</title>
     <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -72,7 +110,7 @@ $lastname = $_SESSION["lastname"];
             <hr class="sidebar-divider">
 
 
-            <li class="nav-item active">
+            <li class="nav-item ">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fa fa-fw fa-user"></i>
                     <span>Pharmacist</span>
@@ -80,14 +118,14 @@ $lastname = $_SESSION["lastname"];
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Pharmacist Options</h6>
-                        <a class="collapse-item" href="add.php">Add Pharmacist</a>
-                        <a class="collapse-item" href="view.php">View Pharmacists</a>
+                        <a class="collapse-item" href="../pharmacist/add.php">Add Pharmacist</a>
+                        <a class="collapse-item" href="../pharmacist/view.php">View Pharmacists</a>
                     </div>
                 </div>
             </li>
 
 
-            <li class="nav-item">
+            <li class="nav-item ">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fa fa-fw fa-user-plus"></i>
                     <span>Manager</span>
@@ -102,7 +140,7 @@ $lastname = $_SESSION["lastname"];
             </li>
 
 
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCasher" aria-expanded="true" aria-controls="collapseCasher">
                     <i class="fas fa-fw fa-dollar-sign    "></i>
                     <span>Casher</span>
@@ -110,8 +148,8 @@ $lastname = $_SESSION["lastname"];
                 <div id="collapseCasher" class="collapse" aria-labelledby="headingCasher" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Casher Options</h6>
-                        <a class="collapse-item" href="../casher/add.php">Add Casher</a>
-                        <a class="collapse-item" href="../casher/view.php">View Cashers</a>
+                        <a class="collapse-item" href="add.php">Add Casher</a>
+                        <a class="collapse-item" href="view.php">View Cashers</a>
                     </div>
                 </div>
             </li>
@@ -206,26 +244,62 @@ $lastname = $_SESSION["lastname"];
 
                 </nav>
 
-                <div class="container-fluid">
-                    <div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Email</th>
-                                        <th>Role</th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
 
-                            </table>
-                        </div>
+
+
+                <div class="container-fluid">
+                    <?php if (isset($error)) {
+                        echo "<div class='alert alert-danger mt-5' role='alert'>
+          $error
+        </div>";
+                    } ?>
+                    <?php if (isset($message)) {
+                        echo "<div class='alert alert-success mt-5' role='alert'>
+          $message
+        </div>";
+                    } ?>
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Edit Casher</h1>
                     </div>
+                    <form class='user' action='' method='POST'>
+                        <?php
+
+                        echo "
+                       <div class='form-group'>
+                            <input type='text' name='firstname' class='form-control form-control' placeholder='Last Name' value='$firstnameUser'  required>
+                        </div>
+                        <div class='form-group'>
+                            <input type='text' name='lastname' class='form-control form-control' placeholder='First Name' value='$lastnameUser' required>
+                        </div>
+
+                        <div class='form-group'>
+                            <input type='email' name='email' class='form-control form-control' id='exampleInputEmail' aria-describedby='emailHelp' value='$email' placeholder='Enter Email Address...' required>
+                        </div>
+                     ";
+
+                        ?>
+                        <?php if ($loading) {
+                            echo "
+                        
+                            <button  class='btn btn-primary' disabled='true'>
+                                Loading....
+                            </button>
+                            
+                            ";
+                        } else {
+                            echo "
+                        
+                            <button type='submit' class='btn btn-primary'>
+                                Save
+                            </button>
+                            
+                            ";
+                        }
+                        ?>
+                    </form>
                 </div>
+
+
             </div>
 
 
@@ -268,7 +342,7 @@ $lastname = $_SESSION["lastname"];
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="../logout.php">Logout</a>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
                 </div>
             </div>
         </div>
@@ -282,39 +356,14 @@ $lastname = $_SESSION["lastname"];
     <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="../js/demo/datatables-demo.js"></script>
+
+
 </body>
 
 </html>
 
 <script>
-    var table = $('#dataTable').dataTable({
-        ajax: {
-            url: "data.php",
-            dataSrc: "",
-            type: "POST",
-            data: function(e) {
-                return JSON.stringify(e)
-
-            }
-        },
-        fnCreateRow: function(nRow, aData, iDataIndex) {
-            $(nRow).attr("id", aData[0])
-        },
-    
 
 
-    });
 
-    function deleteUser(id){
-        if(confirm("Are you sure you want to delete this user?")){
-             $.ajax({
-                url:"delete.php?id="+id,
-                method:"post",
-                success(data){
-                    alert(data);
-                    window.location.reload();
-                }    
-             })
-        }
-    }
 </script>

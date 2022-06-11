@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Medic - View Pharmacist</title>
+    <title>Medic - Edit Pharmacist</title>
     <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -134,7 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manager Options</h6>
                         <a class="collapse-item" href="../manager/add.php">Add Manager</a>
-                        <a class="collapse-item" href="utilities-border.html">View Managers</a>
+                        <a class="collapse-item" href="../manager/view.php">View Managers</a>
                     </div>
                 </div>
             </li>
@@ -148,8 +148,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div id="collapseCasher" class="collapse" aria-labelledby="headingCasher" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Casher Options</h6>
-                        <a class="collapse-item" href="utilities-color.html">Add Casher</a>
-                        <a class="collapse-item" href="utilities-border.html">View Cashers</a>
+                        <a class="collapse-item" href="../casher/add.php">Add Casher</a>
+                        <a class="collapse-item" href="../casher/view.php">View Cashers</a>
                     </div>
                 </div>
             </li>

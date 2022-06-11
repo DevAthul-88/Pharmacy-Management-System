@@ -110,8 +110,8 @@ $lastname = $_SESSION["lastname"];
                 <div id="collapseCasher" class="collapse" aria-labelledby="headingCasher" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Casher Options</h6>
-                        <a class="collapse-item" href="utilities-color.html">Add Casher</a>
-                        <a class="collapse-item" href="utilities-border.html">View Cashers</a>
+                        <a class="collapse-item" href="../casher/add.php">Add Casher</a>
+                        <a class="collapse-item" href="../casher/view.php">View Cashers</a>
                     </div>
                 </div>
             </li>
