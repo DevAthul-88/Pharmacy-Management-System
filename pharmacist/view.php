@@ -10,6 +10,10 @@ $lastname = $_SESSION["lastname"];
 
 
 
+
+
+
+
 ?>
 
 
@@ -164,34 +168,6 @@ $lastname = $_SESSION["lastname"];
 
                     <ul class="navbar-nav ml-auto">
 
-
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-
-
-
-
-
-
-
-
-
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
@@ -225,12 +201,6 @@ $lastname = $_SESSION["lastname"];
                 </nav>
 
                 <div class="container-fluid">
-
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">View Pharmacists</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Download Data</a>
-                    </div>
-
                     <div>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -243,6 +213,7 @@ $lastname = $_SESSION["lastname"];
                                         <th>Role</th>
                                     </tr>
                                 </thead>
+
                             </table>
                         </div>
                     </div>
@@ -303,41 +274,53 @@ $lastname = $_SESSION["lastname"];
     <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="../js/demo/datatables-demo.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>
+
+
 </body>
 
 </html>
 
 <script>
+    var table = $('#dataTable').dataTable({
 
-        $('#dataTable').dataTable({
+        ajax: {
+            url: "data.php",
+            dataSrc: "",
+            type: "POST",
+            data: function(e) {
+                return JSON.stringify(e)
 
-            ajax: {
-                url: "data.php",
-                dataSrc: "",
-                type:"POST",
-                data: function(e) {
-                    return JSON.stringify(e)
-                    
-                }
+            }
+        },
+
+
+
+
+        "columns": [{
+                "data": "id"
             },
-          
-
-            "columns": [{
-                    "data": "id"
-                },
-                {
-                    "data": "firstname"
-                },
-                {
-                    "data": "lastname"
-                },
-                {
-                    "data": "email"
-                },
-                {
-                    "data":"role"
-                }
-            ]
-        });
-    
+            {
+                "data": "firstname"
+            },
+            {
+                "data": "lastname"
+            },
+            {
+                "data": "email"
+            },
+            {
+                "data": "role"
+            }
+        ],
+        'aoColumns': [{
+            'mRender': function(data, type, full) {
+                return '<a href=\'view.php?id=\'' + full[0] + '\' class=\'btn btn-primary\'>Contact Sales</a>';
+            }
+        }],
+    });
 </script>

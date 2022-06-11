@@ -20,6 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($checkPassword == 0) {
             $error = "Incorrect Password";
         } else {
+            session_set_cookie_params(120000000);
             $_SESSION["auth"] = "true";
             $_SESSION["email"] = $user["email"];
             $_SESSION["firstname"] = $user["firstname"];
