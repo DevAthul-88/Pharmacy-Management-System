@@ -189,7 +189,28 @@ $lastname = $_SESSION["lastname"];
                 </nav>
 
                 <div class="container-fluid">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Medicines</h1>
+                        <a href="medicine_add.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Add Medicine</a>
+                    </div>
+                    <div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Medicine Generic</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Purchase Date</th>
+                                        <th>Expire Date</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
 
+                            </table>
+                        </div>
+                    </div>
 
                 </div>
 
@@ -205,20 +226,19 @@ $lastname = $_SESSION["lastname"];
                     </div>
                 </div>
             </footer>
-            <!-- End of Footer -->
 
         </div>
-        <!-- End of Content Wrapper -->
+
 
     </div>
-    <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
+
+
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Logout Modal-->
+
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -249,3 +269,23 @@ $lastname = $_SESSION["lastname"];
 </body>
 
 </html>
+
+<script>
+    var table = $('#dataTable').dataTable({
+        ajax: {
+            url: "data.php",
+            dataSrc: "",
+            type: "POST",
+            data: function(e) {
+                return JSON.stringify(e)
+
+            }
+        },
+        fnCreateRow: function(nRow, aData, iDataIndex) {
+            $(nRow).attr("id", aData[0])
+        },
+
+
+
+    });
+</script>
