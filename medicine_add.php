@@ -36,12 +36,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $quantity = $_POST["quantity"];
     $price = $_POST["price"];
     $loading = true;
-    $sql = "INSERT INTO medicine ('name' , 'generic' , 'quantity' , 'pdate' , 'edate' , 'price' , 'type') VALUES ('$name' , '$generic' , '$quantity' , '$pdate' , '$edate' , '$price' , '$type') ";
+    $sql = "INSERT INTO medicine (name , generic , quantity , pdate , edate , price , type , admin) VALUES ('$name' , '$generic' , '$quantity' , '$pdate' , '$edate' , '$price' , '$type' , '$boss') ";
     if ($conn->query($sql) == true) {
         $message = "Medicine created successfully";
         $loading = false;
     } else {
         $error = "Error occurred while submitting";
+        echo $conn->error;
         $loading = false;
     }
 
@@ -165,7 +166,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </li>
 
             <li class="nav-item active">
-                <a class="nav-link" href="../medicine.php">
+                <a class="nav-link" href="medicine.php">
                     <i class="fas fa-fw fa-pills "></i>
                     <span>Medicine</span></a>
             </li>

@@ -199,11 +199,13 @@ $lastname = $_SESSION["lastname"];
                                 <thead>
                                     <tr>
                                         <th>Id</th>
+                                        <th>Medicine Name</th>
                                         <th>Medicine Generic</th>
                                         <th>Quantity</th>
-                                        <th>Price</th>
                                         <th>Purchase Date</th>
                                         <th>Expire Date</th>
+                                        <th>Price</th>
+                                        <th>Type</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -258,13 +260,13 @@ $lastname = $_SESSION["lastname"];
     </div>
 
 
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="js/sb-admin-2.min.js"></script>
-    <script src="vendor/chart.js/Chart.min.js"></script>
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+    <script src="./vendor/jquery/jquery.min.js"></script>
+    <script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="./vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="./js/sb-admin-2.min.js"></script>
+    <script src="./vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="./vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="./js/demo/datatables-demo.js"></script>
 
 </body>
 
@@ -273,7 +275,7 @@ $lastname = $_SESSION["lastname"];
 <script>
     var table = $('#dataTable').dataTable({
         ajax: {
-            url: "data.php",
+            url: "medicine_data.php",
             dataSrc: "",
             type: "POST",
             data: function(e) {
