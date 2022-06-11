@@ -212,6 +212,7 @@ $lastname = $_SESSION["lastname"];
                                         <th>Email</th>
                                         <th>Role</th>
                                         <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
 
@@ -225,7 +226,7 @@ $lastname = $_SESSION["lastname"];
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                        <span>Copyright &copy; Athul Vinod Medic 2022</span>
                     </div>
                 </div>
             </footer>
@@ -235,15 +236,15 @@ $lastname = $_SESSION["lastname"];
 
 
 
-        <!-- End of Footer -->
+
 
     </div>
-    <!-- End of Content Wrapper -->
+
 
     </div>
-    <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
+
+
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>

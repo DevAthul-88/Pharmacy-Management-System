@@ -1,6 +1,7 @@
 <?php
 session_start();
 require "../func/auth.php";
+require "../connection/connection.php";
 
 isUserAuthenticated();
 
@@ -9,33 +10,30 @@ $lastname = $_SESSION["lastname"];
 
 ?>
 
-<?php
 
+<?php
+$id = $_GET["id"];
 require "../connection/connection.php";
 
 
 $error = null;
 $loading = false;
 $message = null;
+$user = null;
+$firstnameUser = "";
+$lastnameUser = "";
+$email = "";
 
-$boss =  $_SESSION["userId"];
+$sql = "SELECT * FROM pharmacist WHERE id = $id";
+$result = $conn->query($sql);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $firstName = $_POST["firstname"];
-    $lastName = $_POST["lastname"];
-    $email = $_POST["email"];
-    $password = $_POST["password"];
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $loading = true;
-    $sql = "INSERT INTO pharmacist (firstname , lastname , email , password , boss) VALUES ('$firstName' , '$lastName' , '$email' , '$hashedPassword' , $boss) ";
-    if ($conn->query($sql) == true) {
-        $message = "Pharmacist created successfully";
-    } else {
-        $error = "Error occurred while submitting";
-        $loading = false;
-    }
-
-    $conn->close();
+if ($result->num_rows == 1) {
+    $user = $result->fetch_assoc();
+    $firstnameUser = $user["firstname"];
+    $lastnameUser = $user["lastname"];
+    $email = $user["email"];
+} else {
+    $error = "Some error occurred while fetching the information.";
 }
 
 
@@ -55,13 +53,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Medic - Add Pharmacist</title>
-
-
+    <title>Medic - View Pharmacist</title>
+    <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
@@ -230,110 +225,125 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 </nav>
 
-                <div class="container-fluid">
-                    <?php if (isset($error)) {
-                        echo "<div class='alert alert-danger mt-5' role='alert'>
+
+                <?php if (isset($error)) {
+                    echo "<div class='alert alert-danger mt-5' role='alert'>
           $error
         </div>";
-                    } ?>
+                } ?>
 
-                    <div class="container-fluid">
-                        <?php if (isset($message)) {
-                            echo "<div class='alert alert-success mt-5' role='alert'>
+                <div class="container-fluid">
+                    <?php if (isset($message)) {
+                        echo "<div class='alert alert-success mt-5' role='alert'>
           $message
         </div>";
-                        } ?>
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Add Pharmacist</h1>
+                    } ?>
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Edit Pharmacist</h1>
+                    </div>
+                    <form class='user' action='' method='POST'>
+                     <?php 
+                     
+                     echo "
+                       <div class='form-group'>
+                            <input type='text' name='firstname' class='form-control form-control' placeholder='Last Name' value='$firstnameUser'  required>
                         </div>
-                        <form class="user" action="" method="POST">
-                            <div class="form-group">
-                                <input type="text" name="firstname" class="form-control form-control" placeholder="Last Name" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" name="lastname" class="form-control form-control" placeholder="First Name" required>
-                            </div>
+                        <div class='form-group'>
+                            <input type='text' name='lastname' class='form-control form-control' placeholder='First Name' value='$lastnameUser' required>
+                        </div>
 
-                            <div class="form-group">
-                                <input type="email" name="email" class="form-control form-control" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." required>
-                            </div>
-                            <div class="form-group">
-                                <input type="password" name="password" class="form-control form-control" id="exampleInputPassword" placeholder="Password" required>
-                            </div>
-                            <?php if ($loading) {
-                                echo "
+                        <div class='form-group'>
+                            <input type='email' name='email' class='form-control form-control' id='exampleInputEmail' aria-describedby='emailHelp' value='$email' placeholder='Enter Email Address...' required>
+                        </div>
+                     ";
+                     
+                     ?> 
+                      <?php if ($loading) {
+                            echo "
                         
                             <button  class='btn btn-primary' disabled='true'>
                                 Loading....
                             </button>
                             
                             ";
-                            } else {
-                                echo "
+                        } else {
+                            echo "
                         
                             <button type='submit' class='btn btn-primary'>
-                                Create Pharmacist
+                                Save
                             </button>
                             
                             ";
-                            }
-                            ?>
-                        </form>
-                    </div>
-
-
+                        }
+                        ?>
+                      </form>
                 </div>
 
 
-
-                <footer class="sticky-footer bg-white">
-                    <div class="container my-auto">
-                        <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2021</span>
-                        </div>
-                    </div>
-                </footer>
-        
-
             </div>
-  
+
+
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Athul Vinod Medic 2022</span>
+                    </div>
+                </div>
+            </footer>
 
         </div>
- 
 
-        <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
 
-        <!-- Logout Modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="login.html">Logout</a>
-                    </div>
+
+
+
+
+    </div>
+
+
+    </div>
+
+
+
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
                 </div>
             </div>
         </div>
+    </div>
 
 
-        <script src="../vendor/jquery/jquery.min.js"></script>
-        <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
-        <script src="../js/sb-admin-2.min.js"></script>
-        <script src="../vendor/chart.js/Chart.min.js"></script>
-        <script src="../js/demo/chart-area-demo.js"></script>
-        <script src="../js/demo/chart-pie-demo.js"></script>
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../js/sb-admin-2.min.js"></script>
+    <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="../js/demo/datatables-demo.js"></script>
+
 
 </body>
 
 </html>
+
+<script>
+
+
+
+</script>
