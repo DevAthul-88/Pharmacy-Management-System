@@ -11,7 +11,15 @@ $users = array();
 
 if($result->num_rows > 0){
    while($row = $result->fetch_assoc()){
-     $users[] = $row;
+     $subarray = array();
+     $userId  = $row['id'];
+     $subarray[] = $row["id"];
+     $subarray[] = $row["firstname"];
+     $subarray[] = $row["lastname"];
+     $subarray[] = $row["email"];
+     $subarray[] = $row["role"];
+     $subarray[] = "<button onclick='deleteUser($userId)' class='btn btn-danger btn-sm'>Delete</button>";
+     $users[] = $subarray;
    }
 }
 

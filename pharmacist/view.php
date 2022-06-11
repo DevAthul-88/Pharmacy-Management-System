@@ -211,6 +211,7 @@ $lastname = $_SESSION["lastname"];
                                         <th>Last Name</th>
                                         <th>Email</th>
                                         <th>Role</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
 
@@ -287,7 +288,6 @@ $lastname = $_SESSION["lastname"];
 
 <script>
     var table = $('#dataTable').dataTable({
-
         ajax: {
             url: "data.php",
             dataSrc: "",
@@ -297,30 +297,20 @@ $lastname = $_SESSION["lastname"];
 
             }
         },
+        fnCreateRow: function(nRow, aData, iDataIndex) {
+            $(nRow).attr("id", aData[0])
+        },
+        columnDefs: [{
+            target: [0, 5],
+            orderable: false,
+        }]
 
 
-
-
-        "columns": [{
-                "data": "id"
-            },
-            {
-                "data": "firstname"
-            },
-            {
-                "data": "lastname"
-            },
-            {
-                "data": "email"
-            },
-            {
-                "data": "role"
-            }
-        ],
-        'aoColumns': [{
-            'mRender': function(data, type, full) {
-                return '<a href=\'view.php?id=\'' + full[0] + '\' class=\'btn btn-primary\'>Contact Sales</a>';
-            }
-        }],
     });
+
+    function deleteUser(id){
+        if(confirm("Are you sure you want to delete this user?")){
+            alert("User with id " + id + " has been deleted")
+        }
+    }
 </script>
