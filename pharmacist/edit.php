@@ -3,10 +3,16 @@ session_start();
 require "../func/auth.php";
 require "../connection/connection.php";
 
-isUserAuthenticated();
+
 
 $firstname = $_SESSION["firstname"];
 $lastname = $_SESSION["lastname"];
+
+function isUserAuthenticated(){
+    if(!$_SESSION["auth"]){
+        redirect("../login.php?unauthorized");
+    }
+}
 
 ?>
 
@@ -36,11 +42,24 @@ if ($result->num_rows == 1) {
     $error = "Some error occurred while fetching the information.";
 }
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $firstName = $_POST["firstname"];
+    $lastName = $_POST["lastname"];
+    $email = $_POST["email"];
+    $loading = true;
+    $sql = "UPDATE pharmacist SET firstname='$firstName' , lastname='$lastName' , email='$email' WHERE id='$id'";
+    if ($conn->query($sql) == true) {
+        $message = "Pharmacist updated successfully";
+    } else {
+        $error = "Error occurred while submitting";
+        $loading = false;
+    }
+
+    $conn->close();
+}
 
 
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -226,13 +245,14 @@ if ($result->num_rows == 1) {
                 </nav>
 
 
-                <?php if (isset($error)) {
-                    echo "<div class='alert alert-danger mt-5' role='alert'>
-          $error
-        </div>";
-                } ?>
+
 
                 <div class="container-fluid">
+                    <?php if (isset($error)) {
+                        echo "<div class='alert alert-danger mt-5' role='alert'>
+          $error
+        </div>";
+                    } ?>
                     <?php if (isset($message)) {
                         echo "<div class='alert alert-success mt-5' role='alert'>
           $message
@@ -242,9 +262,9 @@ if ($result->num_rows == 1) {
                         <h1 class="h3 mb-0 text-gray-800">Edit Pharmacist</h1>
                     </div>
                     <form class='user' action='' method='POST'>
-                     <?php 
-                     
-                     echo "
+                        <?php
+
+                        echo "
                        <div class='form-group'>
                             <input type='text' name='firstname' class='form-control form-control' placeholder='Last Name' value='$firstnameUser'  required>
                         </div>
@@ -256,9 +276,9 @@ if ($result->num_rows == 1) {
                             <input type='email' name='email' class='form-control form-control' id='exampleInputEmail' aria-describedby='emailHelp' value='$email' placeholder='Enter Email Address...' required>
                         </div>
                      ";
-                     
-                     ?> 
-                      <?php if ($loading) {
+
+                        ?>
+                        <?php if ($loading) {
                             echo "
                         
                             <button  class='btn btn-primary' disabled='true'>
@@ -276,7 +296,7 @@ if ($result->num_rows == 1) {
                             ";
                         }
                         ?>
-                      </form>
+                    </form>
                 </div>
 
 

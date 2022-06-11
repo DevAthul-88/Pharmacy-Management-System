@@ -2,10 +2,16 @@
 session_start();
 require "../func/auth.php";
 
-isUserAuthenticated();
+
 
 $firstname = $_SESSION["firstname"];
 $lastname = $_SESSION["lastname"];
+
+function isUserAuthenticated(){
+    if(!$_SESSION["auth"]){
+        redirect("../login.php?unauthorized");
+    }
+}
 
 ?>
 
@@ -30,6 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO pharmacist (firstname , lastname , email , password , boss) VALUES ('$firstName' , '$lastName' , '$email' , '$hashedPassword' , $boss) ";
     if ($conn->query($sql) == true) {
         $message = "Pharmacist created successfully";
+        $loading = false;
     } else {
         $error = "Error occurred while submitting";
         $loading = false;

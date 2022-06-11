@@ -3,13 +3,16 @@ session_start();
 require "../func/auth.php";
 require "../connection/connection.php";
 
-isUserAuthenticated();
 
 $firstname = $_SESSION["firstname"];
 $lastname = $_SESSION["lastname"];
 
 
-
+function isUserAuthenticated(){
+    if(!$_SESSION["auth"]){
+        redirect("../login.php?unauthorized");
+    }
+}
 
 
 
@@ -301,10 +304,7 @@ $lastname = $_SESSION["lastname"];
         fnCreateRow: function(nRow, aData, iDataIndex) {
             $(nRow).attr("id", aData[0])
         },
-        columnDefs: [{
-            target: [0, 5],
-            orderable: false,
-        }]
+    
 
 
     });
