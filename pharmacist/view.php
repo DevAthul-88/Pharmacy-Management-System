@@ -310,7 +310,14 @@ $lastname = $_SESSION["lastname"];
 
     function deleteUser(id){
         if(confirm("Are you sure you want to delete this user?")){
-            alert("User with id " + id + " has been deleted")
+             $.ajax({
+                url:"delete.php?id="+id,
+                method:"post",
+                success(data){
+                    alert(data);
+                    window.location.reload();
+                }    
+             })
         }
     }
 </script>
