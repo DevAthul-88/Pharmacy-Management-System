@@ -116,22 +116,15 @@ $lastname = $_SESSION["lastname"];
 
 
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+                <a class="nav-link" href="sales.php">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Stock</span></a>
+                    <span>Sales</span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Out Of Stock</span></a>
-            </li>
-
-
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fa fa-fw fa-exclamation-triangle" aria-hidden="true"></i>
-                    <span>Expire Soon</span></a>
+                <a class="nav-link" href="medicine.php">
+                    <i class="fas fa-fw fa-pills "></i>
+                    <span>Medicine</span></a>
             </li>
 
 
@@ -163,35 +156,7 @@ $lastname = $_SESSION["lastname"];
 
 
                     <ul class="navbar-nav ml-auto">
-
-
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-
-
-
-
-
-
-
-
-                        <li class="nav-item dropdown no-arrow">
+               <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     <?php echo "$firstname" . " " . "$lastname"; ?>

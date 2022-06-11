@@ -164,22 +164,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+                <a class="nav-link" href="../sales.php">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Stock</span></a>
+                    <span>Sales</span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Out Of Stock</span></a>
-            </li>
-
-
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fa fa-fw fa-exclamation-triangle" aria-hidden="true"></i>
-                    <span>Expire Soon</span></a>
+                <a class="nav-link" href="../medicine.php">
+                    <i class="fas fa-fw fa-pills "></i>
+                    <span>Medicine</span></a>
             </li>
 
 
