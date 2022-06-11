@@ -1,18 +1,18 @@
 <?php
 session_start();
-require "../func/auth.php";
 require "../connection/connection.php";
-
-
-
-$firstname = $_SESSION["firstname"];
-$lastname = $_SESSION["lastname"];
-
+require "../func/redirect.php";
 function isUserAuthenticated(){
     if(!$_SESSION["auth"]){
         redirect("../login.php?unauthorized");
     }
 }
+isUserAuthenticated();
+
+
+$firstname = $_SESSION["firstname"];
+$lastname = $_SESSION["lastname"];
+
 
 ?>
 

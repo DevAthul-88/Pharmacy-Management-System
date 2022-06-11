@@ -1,5 +1,12 @@
 <?php 
 session_start();
+require "../func/redirect.php";
+function isUserAuthenticated(){
+    if(!$_SESSION["auth"]){
+        redirect("../login.php?unauthorized");
+    }
+}
+isUserAuthenticated();
 
 require "../connection/connection.php";
 

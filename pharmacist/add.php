@@ -1,17 +1,17 @@
 <?php
 session_start();
-require "../func/auth.php";
-
-
-
-$firstname = $_SESSION["firstname"];
-$lastname = $_SESSION["lastname"];
-
+require "../func/redirect.php";
 function isUserAuthenticated(){
     if(!$_SESSION["auth"]){
         redirect("../login.php?unauthorized");
     }
 }
+isUserAuthenticated();
+
+
+$firstname = $_SESSION["firstname"];
+$lastname = $_SESSION["lastname"];
+
 
 ?>
 
@@ -300,13 +300,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     </div>
                 </footer>
-        
+
 
             </div>
-  
+
 
         </div>
- 
+
 
         <!-- Scroll to Top Button-->
         <a class="scroll-to-top rounded" href="#page-top">
