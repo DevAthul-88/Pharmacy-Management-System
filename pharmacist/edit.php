@@ -50,6 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "UPDATE pharmacist SET firstname='$firstName' , lastname='$lastName' , email='$email' WHERE id='$id'";
     if ($conn->query($sql) == true) {
         $message = "Pharmacist updated successfully";
+        $loading = false;
     } else {
         $error = "Error occurred while submitting";
         $loading = false;

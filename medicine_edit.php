@@ -35,21 +35,30 @@ $result = $conn->query($sql);
 
 if ($result->num_rows == 1) {
     $user = $result->fetch_assoc();
-    $firstnameUser = $user["firstname"];
-    $lastnameUser = $user["lastname"];
-    $email = $user["email"];
+    $name = $user["name"];
+    $generic = $user["generic"];
+    $type = $user["type"];
+    $pdate = $user["pdate"];
+    $edate = $user["edate"];
+    $quantity = $user["quantity"];
+    $price = $user["price"];
 } else {
     $error = "Some error occurred while fetching the information.";
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $firstName = $_POST["firstname"];
-    $lastName = $_POST["lastname"];
-    $email = $_POST["email"];
+    $name = $_POST["name"];
+    $generic = $_POST["generic"];
+    $type = $_POST["type"];
+    $pdate = $_POST["pdate"];
+    $edate = $_POST["edate"];
+    $quantity = $_POST["quantity"];
+    $price = $_POST["price"];
     $loading = true;
-    $sql = "UPDATE boss SET firstname='$firstName' , lastname='$lastName' , email='$email' WHERE id='$id'";
+    $sql = "UPDATE  medicine SET name='$name' , generic='$generic' , price='$price' , type='$type' , pdate='$pdate' , edate='$edate' , quantity='$quantity' WHERE id='$id' ";
     if ($conn->query($sql) == true) {
-        $message = "Manager updated successfully";
+        $message = "Medicine updated successfully";
+        $loading = false;
     } else {
         $error = "Error occurred while submitting";
         $loading = false;
@@ -72,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Medic - Edit Manager</title>
+    <title>Medic - Edit Medicine</title>
     <link href="./vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="./vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -259,14 +268,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         echo "
                         <div class='form-group'>
-                        <input type='text' name='name' class='form-control form-control' placeholder='Medicine Name' required>
+                        <input type='text' name='name' value='$name' class='form-control form-control' placeholder='Medicine Name' required>
                     </div>
 
                     <div class='input-group mb-3'>
                         <div class='input-group-prepend'>
                             <label class='input-group-text' for='inputGroupSelect01'>Generic</label>
                         </div>
-                        <select class='custom-select' id='inputGroupSelect01' name='generic'>
+                        <select class='custom-select' id='inputGroupSelect01' name='generic' selected='$generic'>
                             <option value='antiviral' selected>Antiviral</option>
                             <option value='paracetamol'>Paracetamol</option>
                             <option value='amtodophine'>Amtodophine</option>
@@ -282,7 +291,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class='input-group-prepend'>
                             <label class='input-group-text' for='inputGroupSelect01'>Type</label>
                         </div>
-                        <select class='custom-select' id='inputGroupSelect01' name='type'>
+                        <select class='custom-select' id='inputGroupSelect01' name='type' selected='$type'>
                             <option value='capsule' selected>Capsule</option>
                             <option value='tablet'>Tablet</option>
                             <option value='liquid/syrup'>Liquid / Syrup</option>
@@ -291,19 +300,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
 
                     <div class='form-group'>
-                        <input type='date' name='pdate' class='form-control form-control' id='exampleInputPassword' placeholder='Purchase Date' required>
+                        <input type='date' name='pdate' value='$pdate' class='form-control form-control' id='exampleInputPassword' placeholder='Purchase Date' required>
                         <small id='emailHelp' class='form-text text-muted'>Purchase Date</small>
                     </div>
                     <div class='form-group'>
-                        <input type='date' name='edate' class='form-control form-control' id='exampleInputPassword' placeholder='Expire Date' required>
+                        <input type='date' name='edate' value='$edate' class='form-control form-control' id='exampleInputPassword' placeholder='Expire Date' required>
                         <small id='emailHelp' class='form-text text-muted'>Expire Date.</small>
                     </div>
                     <div class='form-group'>
-                        <input type='number' name='quantity' class='form-control form-control' placeholder='Quantity' required>
+                        <input type='number' name='quantity' value='$quantity' class='form-control form-control' placeholder='Quantity' required>
                     </div>
 
                     <div class='form-group'>
-                        <input type='number' name='price' class='form-control form-control' id='exampleInputEmail' aria-describedby='emailHelp' placeholder='Price' required>
+                        <input type='number' name='price' value='$price' class='form-control form-control' id='exampleInputEmail' aria-describedby='emailHelp' placeholder='Price' required>
                     </div>
                      ";
 
