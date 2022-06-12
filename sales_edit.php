@@ -125,8 +125,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Pharmacist Options</h6>
-                        <a class="collapse-item" href="../pharmacist/add.php">Add Pharmacist</a>
-                        <a class="collapse-item" href="../pharmacist/view.php">View Pharmacists</a>
+                        <a class="collapse-item" href="./pharmacist/add.php">Add Pharmacist</a>
+                        <a class="collapse-item" href="./pharmacist/view.php">View Pharmacists</a>
                     </div>
                 </div>
             </li>
@@ -155,8 +155,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div id="collapseCasher" class="collapse" aria-labelledby="headingCasher" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Casher Options</h6>
-                        <a class="collapse-item" href="../casher/add.php">Add Casher</a>
-                        <a class="collapse-item" href="../casher/view.php">View Cashers</a>
+                        <a class="collapse-item" href="./casher/add.php">Add Casher</a>
+                        <a class="collapse-item" href="./casher/view.php">View Cashers</a>
                     </div>
                 </div>
             </li>
