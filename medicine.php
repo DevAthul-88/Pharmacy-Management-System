@@ -22,12 +22,10 @@ $lastname = $_SESSION["lastname"];
     <meta name="author" content="">
 
     <title>Medic - Medicine</title>
-
-
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="./vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="./vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="./css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
@@ -164,19 +162,6 @@ $lastname = $_SESSION["lastname"];
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
-                                </a>
-                                <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
@@ -193,6 +178,7 @@ $lastname = $_SESSION["lastname"];
                         <h1 class="h3 mb-0 text-gray-800">Medicines</h1>
                         <a href="medicine_add.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Add Medicine</a>
                     </div>
+
                     <div>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -214,6 +200,8 @@ $lastname = $_SESSION["lastname"];
                             </table>
                         </div>
                     </div>
+
+
 
                 </div>
 
@@ -267,14 +255,14 @@ $lastname = $_SESSION["lastname"];
     <script src="./js/sb-admin-2.min.js"></script>
     <script src="./vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="./vendor/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="./js/demo/datatables-demo.js"></script>
+
 
 </body>
 
 </html>
 
 <script>
-    var table = $('#dataTable').dataTable({
+    $('#dataTable').dataTable({    
         ajax: {
             url: "medicine_data.php",
             dataSrc: "",
@@ -282,13 +270,27 @@ $lastname = $_SESSION["lastname"];
             data: function(e) {
                 return JSON.stringify(e)
 
-            }
+            },
+           
         },
+
         fnCreateRow: function(nRow, aData, iDataIndex) {
             $(nRow).attr("id", aData[0])
         },
-
-
-
+    
     });
+
+    function deleteUser(id){
+        if(confirm("Are you sure you want to delete this medicine?")){
+             $.ajax({
+                url:"delete_medicine.php?id="+id,
+                method:"post",
+                success(data){
+                    alert(data);
+                    window.location.reload();
+                }    
+             })
+        }
+    }
+
 </script>
