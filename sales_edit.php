@@ -1,27 +1,72 @@
 <?php
 session_start();
-require "../connection/connection.php";
-require "../func/redirect.php";
+require "./connection/connection.php";
+require "./func/redirect.php";
 function isUserAuthenticated(){
     if(!$_SESSION["auth"]){
-        redirect("../login.php?unauthorized");
+        redirect("./login.php?unauthorized");
     }
 }
 isUserAuthenticated();
 
 
-isUserAuthenticated();
 $firstname = $_SESSION["firstname"];
 $lastname = $_SESSION["lastname"];
 
 
+?>
 
 
+<?php
+$id = $_GET["id"];
+require "./connection/connection.php";
 
+
+$error = null;
+$loading = false;
+$message = null;
+$user = null;
+$firstnameUser = "";
+$lastnameUser = "";
+$email = "";
+
+$sql = "SELECT * FROM sales WHERE id = $id";
+$result = $conn->query($sql);
+
+if ($result->num_rows == 1) {
+    $user = $result->fetch_assoc();
+    $name = $user["name"];
+    $customer_name = $user["customer_name"];
+    $quantity = $user["quantity"];
+    $date = $user["date"];
+    $price = $user["total"];
+    $quantity = $user["quantity"];
+    $price = $user["total"];
+} else {
+    $error = "Some error occurred while fetching the information.";
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = $_POST["medicine_name"];
+    $customer_name = $_POST["name"];
+    $quantity = $_POST["quantity"];
+    $date = $_POST["date"];
+    $price = $_POST["price"];
+    $loading = true;
+    $sql = "UPDATE  sales SET name='$name' , customer_name='$customer_name' , total='$price' , date='$date'  , quantity='$quantity' WHERE id='$id' ";
+    if ($conn->query($sql) == true) {
+        $message = "Sale updated successfully";
+        $loading = false;
+    } else {
+        $error = "Error occurred while submitting";
+        $loading = false;
+    }
+
+    $conn->close();
+}
 
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -34,11 +79,11 @@ $lastname = $_SESSION["lastname"];
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Medic - View Pharmacist</title>
-    <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <title>Medic - Edit Sales</title>
+    <link href="./vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="./vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="./css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
@@ -72,7 +117,7 @@ $lastname = $_SESSION["lastname"];
             <hr class="sidebar-divider">
 
 
-            <li class="nav-item active">
+            <li class="nav-item ">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fa fa-fw fa-user"></i>
                     <span>Pharmacist</span>
@@ -80,8 +125,8 @@ $lastname = $_SESSION["lastname"];
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Pharmacist Options</h6>
-                        <a class="collapse-item" href="add.php">Add Pharmacist</a>
-                        <a class="collapse-item" href="view.php">View Pharmacists</a>
+                        <a class="collapse-item" href="../pharmacist/add.php">Add Pharmacist</a>
+                        <a class="collapse-item" href="../pharmacist/view.php">View Pharmacists</a>
                     </div>
                 </div>
             </li>
@@ -95,8 +140,8 @@ $lastname = $_SESSION["lastname"];
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manager Options</h6>
-                        <a class="collapse-item" href="../manager/add.php">Add Manager</a>
-                        <a class="collapse-item" href="../manager/view.php">View Managers</a>
+                        <a class="collapse-item" href="./manager/add.php">Add Manager</a>
+                        <a class="collapse-item" href="./manager/view.php">View Managers</a>
                     </div>
                 </div>
             </li>
@@ -124,14 +169,15 @@ $lastname = $_SESSION["lastname"];
                 Data
             </div>
 
-            <li class="nav-item">
-                <a class="nav-link" href="../sales.php">
+
+            <li class="nav-item active">
+                <a class="nav-link" href="sales.php">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Sales</span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="../medicine.php">
+                <a class="nav-link" href="medicine.php">
                     <i class="fas fa-fw fa-pills "></i>
                     <span>Medicine</span></a>
             </li>
@@ -168,12 +214,13 @@ $lastname = $_SESSION["lastname"];
 
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2  d-lg-inline text-gray-600 small">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     <?php echo "$firstname" . " " . "$lastname"; ?>
                                 </span>
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
@@ -185,26 +232,69 @@ $lastname = $_SESSION["lastname"];
 
                 </nav>
 
-                <div class="container-fluid">
-                    <div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Email</th>
-                                        <th>Role</th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
 
-                            </table>
-                        </div>
+
+
+                <div class="container-fluid">
+                    <?php if (isset($error)) {
+                        echo "<div class='alert alert-danger mt-5' role='alert'>
+          $error
+        </div>";
+                    } ?>
+                    <?php if (isset($message)) {
+                        echo "<div class='alert alert-success mt-5' role='alert'>
+          $message
+        </div>";
+                    } ?>
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Edit Sales</h1>
                     </div>
+                    <form class='user' action='' method='POST'>
+                        <?php
+
+                        echo "
+                        <div class='form-group'>
+                        <input type='text' name='name' value='$customer_name' class='form-control form-control' placeholder='Customer Name' required>
+                    </div>
+
+                    <div class='form-group'>
+                        <input type='date' name='date' value='$date' class='form-control form-control' id='exampleInputPassword' placeholder='Date' required>
+                        <small id='emailHelp' class='form-text text-muted'>Sale Date</small>
+                    </div>
+                    <div class='form-group'>
+                        <input type='text' name='medicine_name' value='$name'class='form-control form-control' placeholder='Medicine Name' required>
+                    </div>
+                    <div class='form-group'>
+                        <input type='number' name='quantity' value='$quantity'class='form-control form-control' id='exampleInputEmail' aria-describedby='emailHelp' placeholder='Quantity' required>
+                    </div>
+                    <div class='form-group'>
+                        <input type='number' name='price' value='$price'class='form-control form-control' id='exampleInputEmail' aria-describedby='emailHelp' placeholder='Total Price' required>
+                    </div>           
+                     ";
+
+                        ?>
+                        <?php if ($loading) {
+                            echo "
+                        
+                            <button  class='btn btn-primary' disabled='true'>
+                                Loading....
+                            </button>
+                            
+                            ";
+                        } else {
+                            echo "
+                        
+                            <button type='submit' class='btn btn-primary'>
+                                Save
+                            </button>
+                            
+                            ";
+                        }
+                        ?>
+                    </form>
                 </div>
+
+
             </div>
 
 
@@ -247,52 +337,28 @@ $lastname = $_SESSION["lastname"];
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="../logout.php">Logout</a>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
                 </div>
             </div>
         </div>
     </div>
 
 
-    <script src="../vendor/jquery/jquery.min.js"></script>
-    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="../js/sb-admin-2.min.js"></script>
-    <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="./vendor/jquery/jquery.min.js"></script>
+    <script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="./vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="./js/sb-admin-2.min.js"></script>
+    <script src="./vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="./vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="./js/demo/datatables-demo.js"></script>
+
+
 </body>
 
 </html>
 
 <script>
-    var table = $('#dataTable').dataTable({
-        ajax: {
-            url: "data.php",
-            dataSrc: "",
-            type: "POST",
-            data: function(e) {
-                return JSON.stringify(e)
-
-            }
-        },
-        fnCreateRow: function(nRow, aData, iDataIndex) {
-            $(nRow).attr("id", aData[0])
-        },
-    
 
 
-    });
 
-    function deleteUser(id){
-        if(confirm("Are you sure you want to delete this user?")){
-             $.ajax({
-                url:"delete.php?id="+id,
-                method:"post",
-                success(data){
-                    alert(data);
-                    window.location.reload();
-                }    
-             })
-        }
-    }
 </script>
