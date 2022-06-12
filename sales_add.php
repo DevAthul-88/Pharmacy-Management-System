@@ -29,16 +29,14 @@ $boss =  $_SESSION["userId"];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST["name"];
-    $generic = $_POST["generic"];
-    $type = $_POST["type"];
-    $pdate = $_POST["pdate"];
-    $edate = $_POST["edate"];
+    $customer_name = $_POST["name"];
     $quantity = $_POST["quantity"];
+    $date = $_POST["date"];
     $price = $_POST["price"];
     $loading = true;
-    $sql = "INSERT INTO medicine (name , generic , quantity , pdate , edate , price , type , admin) VALUES ('$name' , '$generic' , '$quantity' , '$pdate' , '$edate' , '$price' , '$type' , '$boss') ";
+    $sql = "INSERT INTO sales (name , customer_name , quantity , date , total  , boss) VALUES ('$name' , '$customer_name' , '$quantity' , '$date' , '$price' ,  '$boss') ";
     if ($conn->query($sql) == true) {
-        $message = "Medicine created successfully";
+        $message = "Sales created successfully";
         $loading = false;
     } else {
         $error = "Error occurred while submitting";
@@ -209,7 +207,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                               
+
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout

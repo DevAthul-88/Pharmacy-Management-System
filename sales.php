@@ -185,13 +185,11 @@ $lastname = $_SESSION["lastname"];
                                 <thead>
                                     <tr>
                                         <th>Id</th>
+                                        <th>Customer Name</th>
                                         <th>Medicine Name</th>
-                                        <th>Medicine Generic</th>
                                         <th>Quantity</th>
-                                        <th>Purchase Date</th>
-                                        <th>Expire Date</th>
-                                        <th>Price</th>
-                                        <th>Type</th>
+                                        <th>Sale Date</th>
+                                        <th>Total</th>
                                         <th></th>
                                         <th></th>
                                     </tr>
@@ -264,7 +262,7 @@ $lastname = $_SESSION["lastname"];
 <script>
     $('#dataTable').dataTable({    
         ajax: {
-            url: "medicine_data.php",
+            url: "sales_data.php",
             dataSrc: "",
             type: "POST",
             data: function(e) {
