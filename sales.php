@@ -279,9 +279,9 @@ $lastname = $_SESSION["lastname"];
     });
 
     function deleteUser(id){
-        if(confirm("Are you sure you want to delete this medicine?")){
+        if(confirm("Are you sure you want to delete this sale?")){
              $.ajax({
-                url:"delete_medicine.php?id="+id,
+                url:"sales_delete.php?id="+id,
                 method:"post",
                 success(data){
                     alert(data);
