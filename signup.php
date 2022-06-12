@@ -1,9 +1,16 @@
 <?php
-
+session_start();
 require "connection/connection.php";
 require "func/redirect.php";
 
 $error = null;
+
+function isUserAuthenticated(){
+    if(isset($_SESSION["auth"])){
+        redirect("./index.php");
+    }
+}
+isUserAuthenticated();
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

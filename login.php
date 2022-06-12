@@ -1,7 +1,15 @@
 <?php
+session_set_cookie_params(120000);
 session_start();
 require "connection/connection.php";
 require "func/redirect.php";
+
+function isUserAuthenticated(){
+    if(isset($_SESSION["auth"])){
+        redirect("./index.php");
+    }
+}
+isUserAuthenticated();
 
 $message = null;
 $error = null;
@@ -20,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($checkPassword == 0) {
             $error = "Incorrect Password";
         } else {
-            session_set_cookie_params(120000000);
+            
             $_SESSION["auth"] = "true";
             $_SESSION["email"] = $user["email"];
             $_SESSION["firstname"] = $user["firstname"];
@@ -88,9 +96,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         </button>
                                     </form>
                                     <hr>
-                                    <div class="text-center">
-                                        <a class="small" href="forgot-password.html">Forgot Password?</a>
-                                    </div>
                                     <div class="text-center">
                                         <a class="small" href="signup.php">Create an Account!</a>
                                     </div>
