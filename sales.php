@@ -21,7 +21,7 @@ $lastname = $_SESSION["lastname"];
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Medic - Medicine</title>
+    <title>Medic - Sales</title>
     <link href="./vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="./vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -175,8 +175,8 @@ $lastname = $_SESSION["lastname"];
 
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Medicines</h1>
-                        <a href="medicine_add.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Add Medicine</a>
+                        <h1 class="h3 mb-0 text-gray-800">Sales</h1>
+                        <a href="sales_add.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Add Sales</a>
                     </div>
 
                     <div>

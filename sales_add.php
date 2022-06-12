@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Medic - Add Pharmacist</title>
+    <title>Medic - Add Sales</title>
 
 
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -159,13 +159,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 Data
             </div>
 
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="sales.php">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Sales</span></a>
             </li>
 
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="medicine.php">
                     <i class="fas fa-fw fa-pills "></i>
                     <span>Medicine</span></a>
@@ -209,19 +209,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
-                                </a>
-                                <div class="dropdown-divider"></div>
+                               
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
@@ -247,56 +235,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>";
                         } ?>
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Add Medicine</h1>
+                            <h1 class="h3 mb-0 text-gray-800">Add Sales</h1>
                         </div>
                         <form class="user" action="" method="POST">
 
                             <div class="form-group">
-                                <input type="text" name="name" class="form-control form-control" placeholder="Medicine Name" required>
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" for="inputGroupSelect01">Generic</label>
-                                </div>
-                                <select class="custom-select" id="inputGroupSelect01" name="generic">
-                                    <option value="antiviral" selected>Antiviral</option>
-                                    <option value="paracetamol">Paracetamol</option>
-                                    <option value="amtodophine">Amtodophine</option>
-                                    <option value="latanoprost_solution">Latanoprost Solution</option>
-                                    <option value="levocetrizine_dihydrochinoride">Levocetrizine Dihydrochinoride</option>
-                                    <option value="metoxicam">Metoxicam</option>
-                                    <option value="acyclovir_capsule">Acyclovir Capsule</option>
-                                    <option value="simvastain_tablets">Simvastain Tablets</option>
-                                </select>
-                            </div>
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" for="inputGroupSelect01">Type</label>
-                                </div>
-                                <select class="custom-select" id="inputGroupSelect01" name="type">
-                                    <option value="capsule" selected>Capsule</option>
-                                    <option value="tablet">Tablet</option>
-                                    <option value="liquid/syrup">Liquid / Syrup</option>
-                                </select>
-
+                                <input type="text" name="name" class="form-control form-control" placeholder="Customer Name" required>
                             </div>
 
                             <div class="form-group">
-                                <input type="date" name="pdate" class="form-control form-control" id="exampleInputPassword" placeholder="Purchase Date" required>
-                                <small id="emailHelp" class="form-text text-muted">Purchase Date</small>
+                                <input type="date" name="date" class="form-control form-control" id="exampleInputPassword" placeholder="Date" required>
+                                <small id="emailHelp" class="form-text text-muted">Sale Date</small>
                             </div>
                             <div class="form-group">
-                                <input type="date" name="edate" class="form-control form-control" id="exampleInputPassword" placeholder="Expire Date" required>
-                                <small id="emailHelp" class="form-text text-muted">Expire Date.</small>
+                                <input type="text" name="medicine_name" class="form-control form-control" placeholder="Medicine Name" required>
                             </div>
                             <div class="form-group">
-                                <input type="number" name="quantity" class="form-control form-control" placeholder="Quantity" required>
+                                <input type="number" name="quantity" class="form-control form-control" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Quantity" required>
                             </div>
-
                             <div class="form-group">
-                                <input type="number" name="price" class="form-control form-control" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Price" required>
+                                <input type="number" name="price" class="form-control form-control" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Total Price" required>
                             </div>
 
                             <?php if ($loading) {
@@ -311,7 +269,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 echo "
                         
                             <button type='submit' class='btn btn-primary'>
-                               Add Medicine
+                               Add Sales
                             </button>
                             
                             ";
